@@ -47,7 +47,7 @@ session menu.
 Important defaults:
 
 - `Super+Return`: open Kitty
-- `Super+D`: open the application launcher
+- `Super+Space`: open the application launcher
 - `Super+E`: open Files
 - `Super+Shift+W`: close the active window
 - `Super+Shift+E`: exit Hyprland

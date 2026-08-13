@@ -163,6 +163,7 @@ in
     csharp-ls
     dotnet-sdk_10
     fzf
+    fuzzel
     git
     grim
     kitty
@@ -183,7 +184,6 @@ in
     vscode-langservers-extracted
     waybar
     wl-clipboard
-    wofi
     yaml-language-server
   ];
 

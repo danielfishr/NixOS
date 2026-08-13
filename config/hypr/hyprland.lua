@@ -1,6 +1,6 @@
 local mainMod = "SUPER"
 local terminal = "kitty"
-local menu = "wofi --show drun"
+local menu = "fuzzel"
 local fileManager = "nautilus"
 
 hl.monitor({
@@ -60,7 +60,6 @@ hl.config({
     enabled = true,
   },
   dwindle = {
-    pseudotile = true,
     preserve_split = true,
   },
   misc = {
@@ -81,7 +80,7 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 --
 -- Applications and windows:
 --   Super+Return             Open Kitty
---   Super+D                  Open the application launcher
+--   Super+Space              Open the application launcher
 --   Super+E                  Open the file manager
 --   Super+Shift+W            Close the active window
 --   Super+Shift+E            Exit Hyprland
@@ -107,7 +106,7 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 
 -- Applications and session controls.
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
