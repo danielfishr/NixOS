@@ -37,6 +37,12 @@ changes to the managed example with:
 
 It prints `Hello world` when Neovim starts.
 
+## Codex
+
+The system includes both the Codex CLI and the ARM64 Linux desktop app. Run
+`codex` in a terminal, or launch **ChatGPT Community** from Fuzzel. The desktop
+package uses OpenAI's signed Linux application payload.
+
 ## Hyprland
 
 The Hyprland configuration is managed in `config/hypr/hyprland.lua` and linked

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ codex-desktop-linux, pkgs, ... }:
 
 let
   napNvim = pkgs.vimUtils.buildVimPlugin {
@@ -160,6 +160,8 @@ in
 
   environment.systemPackages = with pkgs; [
     brightnessctl
+    codex
+    codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
     csharp-ls
     dotnet-sdk_10
     fzf
@@ -173,6 +175,7 @@ in
     nodejs_24
     playerctl
     pyright
+    python3
     ripgrep
     rust-analyzer
     slurp
@@ -183,6 +186,7 @@ in
     vscode
     vscode-langservers-extracted
     waybar
+    wdisplays
     wl-clipboard
     yaml-language-server
   ];
