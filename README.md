@@ -9,19 +9,21 @@ every rebuild uses the same Nixpkgs revision:
 
 ```sh
 git add flake.nix hosts
-nix --extra-experimental-features 'nix-command flakes' flake lock
+./create-lock.sh
 git add flake.lock
 ```
 
-Then apply the configuration from the repository root:
+Build the configuration without activating it:
 
 ```sh
-sudo nixos-rebuild switch --flake .#nixos \
-  --extra-experimental-features 'nix-command flakes'
+./build.sh
 ```
 
-After that rebuild enables flakes system-wide, the extra feature flag can be
-omitted.
+Apply the configuration:
+
+```sh
+./apply.sh
+```
 
 To label the generated boot entry:
 
