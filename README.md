@@ -49,9 +49,11 @@ Important defaults:
 - `Super+Return`: open Kitty
 - `Super+D`: open the application launcher
 - `Super+E`: open Files
-- `Super+Shift+W`: close the active window
+- `Super+O`: focus the previously selected window
+- `Super+X`: close the active window
 - `Super+Shift+E`: exit Hyprland
-- `Super+1` through `Super+9`: switch workspaces
+- `Super+1` through `Super+9`: switch to workspaces 1–9
+- `Super+0`: switch to workspace 10
 
 `Super+Q` is deliberately unbound.
 

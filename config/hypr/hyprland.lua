@@ -82,7 +82,8 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 --   Super+Return             Open Kitty
 --   Super+D                  Open the application launcher
 --   Super+E                  Open the file manager
---   Super+Shift+W            Close the active window
+--   Super+O                  Focus the previously selected window
+--   Super+X                  Close the active window
 --   Super+Shift+E            Exit Hyprland
 --   Super+F                  Toggle fullscreen
 --   Super+V                  Toggle floating mode
@@ -91,8 +92,8 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 --
 -- Focus and workspaces:
 --   Super+Arrow / Super+HJKL Move focus
---   Super+1..9               Switch workspace
---   Super+Shift+1..9         Move the active window to a workspace
+--   Super+0..9               Switch workspace (0 selects workspace 10)
+--   Super+Shift+0..9         Move the active window to a workspace
 --   Super+mouse wheel        Cycle workspaces
 --   Super+left drag          Move a window
 --   Super+right drag         Resize a window
@@ -108,7 +109,8 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.close())
+hl.bind(mainMod .. " + O", hl.dsp.focus({ last = true }))
+hl.bind(mainMod .. " + X", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
@@ -137,6 +139,9 @@ for workspace = 1, 9 do
   hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = workspace }))
   hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = workspace }))
 end
+
+hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
+hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
 
 -- Cycle workspaces and move/resize windows with the mouse.
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
