@@ -30,6 +30,8 @@
 
   console.keyMap = "uk";
 
+  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+
   services = {
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
@@ -100,10 +102,16 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  environment.etc."xdg/kitty/kitty.conf".text = ''
+    font_family JetBrainsMono Nerd Font
+    font_size 12.0
+  '';
+
   environment.systemPackages = with pkgs; [
     dotnet-sdk_10
     fzf
     git
+    kitty
     nodejs_24
     ripgrep
     tree
