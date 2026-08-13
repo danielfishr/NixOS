@@ -71,8 +71,10 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+    dotnet-sdk_10
     git
     neovim
+    nodejs_24
     tree
     vscode
     wl-clipboard
