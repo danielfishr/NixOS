@@ -60,9 +60,37 @@
     isNormalUser = true;
     description = "dan";
     extraGroups = [ "networkmanager" "wheel" ];
+    shell = pkgs.zsh;
   };
 
-  programs.firefox.enable = true;
+  programs = {
+    firefox.enable = true;
+    zsh.enable = true;
+
+    neovim = {
+      enable = true;
+      package = pkgs.neovim-unwrapped;
+      configure = {
+        customLuaRC = ''
+          local config_dir = vim.fn.stdpath("config")
+          local init_lua = config_dir .. "/init.lua"
+          local init_vim = config_dir .. "/init.vim"
+
+          if vim.fn.filereadable(init_lua) == 1 then
+            dofile(init_lua)
+          elseif vim.fn.filereadable(init_vim) == 1 then
+            vim.cmd.source(vim.fn.fnameescape(init_vim))
+          end
+        '';
+        packages.default.start = with pkgs.vimPlugins; [
+          fzf-lua
+          nvim-tree-lua
+          nvim-web-devicons
+          which-key-nvim
+        ];
+      };
+    };
+  };
 
   nix = {
     settings.experimental-features = [ "nix-command" "flakes" ];
@@ -72,10 +100,12 @@
 
   environment.systemPackages = with pkgs; [
     dotnet-sdk_10
+    fzf
     git
-    neovim
     nodejs_24
+    ripgrep
     tree
+    tree-sitter
     vscode
     wl-clipboard
   ];

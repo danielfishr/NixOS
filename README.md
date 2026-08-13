@@ -25,6 +25,18 @@ Apply the configuration:
 ./apply.sh
 ```
 
+## Neovim
+
+The managed Neovim installation loads the current user's
+`~/.config/nvim/init.lua`. To try the example configuration:
+
+```sh
+mkdir -p ~/.config/nvim
+cp examples/nvim/init.lua ~/.config/nvim/init.lua
+```
+
+It prints `Hello world` when Neovim starts.
+
 To label the generated boot entry:
 
 ```sh
