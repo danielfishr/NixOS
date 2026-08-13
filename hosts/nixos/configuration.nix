@@ -78,6 +78,7 @@ in
 
   programs = {
     firefox.enable = true;
+    hyprland.enable = true;
     zsh.enable = true;
 
     neovim = {
@@ -85,7 +86,7 @@ in
       package = pkgs.neovim-unwrapped;
       configure = {
         customLuaRC = ''
-          ${builtins.readFile ../../examples/nvim/init.lua}
+          ${builtins.readFile ../../config/nvim/init.lua}
 
           local config_dir = vim.fn.stdpath("config")
           local init_lua = config_dir .. "/init.lua"
@@ -142,22 +143,48 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  environment.etc."hypr/hyprland.lua".source = ../../config/hypr/hyprland.lua;
+
+  systemd.tmpfiles.rules = [
+    "d /home/dan/.config 0755 dan users -"
+    "d /home/dan/.config/hypr 0755 dan users -"
+    "L /home/dan/.config/hypr/hyprland.lua - - - - /etc/hypr/hyprland.lua"
+  ];
+
   environment.etc."xdg/kitty/kitty.conf".text = ''
     font_family JetBrainsMono Nerd Font
     font_size 12.0
   '';
 
   environment.systemPackages = with pkgs; [
+    brightnessctl
+    csharp-ls
     dotnet-sdk_10
     fzf
     git
+    grim
     kitty
+    ltex-ls-plus
+    lua-language-server
+    mako
     nodejs_24
+    playerctl
+    pyright
     ripgrep
+    rust-analyzer
+    slurp
     tree
     tree-sitter
+    typescript-language-server
+    typos-lsp
     vscode
+    vscode-langservers-extracted
+    waybar
     wl-clipboard
+    wofi
+    yaml-language-server
   ];
 
   system.stateVersion = "26.05";
