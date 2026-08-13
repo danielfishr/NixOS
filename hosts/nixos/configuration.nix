@@ -1,5 +1,16 @@
 { pkgs, ... }:
 
+let
+  napNvim = pkgs.vimUtils.buildVimPlugin {
+    pname = "nap.nvim";
+    version = "98037cff";
+    src = builtins.fetchGit {
+      url = "https://github.com/liangxianzhe/nap.nvim";
+      rev = "98037cff509a12412cf8f32d1b12a9fdcad558ad";
+    };
+  };
+in
+
 {
   imports = [ ./hardware-configuration.nix ];
 
@@ -86,12 +97,41 @@
             vim.cmd.source(vim.fn.fnameescape(init_vim))
           end
         '';
-        packages.default.start = with pkgs.vimPlugins; [
-          fzf-lua
-          nvim-tree-lua
-          nvim-web-devicons
-          which-key-nvim
-        ];
+        packages.default.start =
+          (with pkgs.vimPlugins; [
+            blink-cmp
+            codecompanion-nvim
+            conform-nvim
+            copilot-lua
+            dracula-nvim
+            fzf-lua
+            gitsigns-nvim
+            lualine-nvim
+            marks-nvim
+            mason-lspconfig-nvim
+            mason-nvim
+            mini-align
+            mini-indentscope
+            mini-move
+            mini-splitjoin
+            noice-nvim
+            nui-nvim
+            nvim-lspconfig
+            nvim-notify
+            nvim-surround
+            nvim-tree-lua
+            nvim-treesitter
+            nvim-treesitter-context
+            nvim-treesitter-textobjects
+            nvim-web-devicons
+            plenary-nvim
+            render-markdown-nvim
+            rose-pine
+            vim-floaterm
+            which-key-nvim
+            yanky-nvim
+          ])
+          ++ [ napNvim ];
       };
     };
   };
