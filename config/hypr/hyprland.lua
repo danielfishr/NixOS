@@ -80,7 +80,7 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 --
 -- Applications and windows:
 --   Super+Return             Open Kitty
---   Super+Space              Open the application launcher
+--   Super+D                  Open the application launcher
 --   Super+E                  Open the file manager
 --   Super+Shift+W            Close the active window
 --   Super+Shift+E            Exit Hyprland
@@ -106,7 +106,7 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 
 -- Applications and session controls.
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
