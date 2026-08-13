@@ -72,6 +72,8 @@
       package = pkgs.neovim-unwrapped;
       configure = {
         customLuaRC = ''
+          ${builtins.readFile ../../examples/nvim/init.lua}
+
           local config_dir = vim.fn.stdpath("config")
           local init_lua = config_dir .. "/init.lua"
           local init_vim = config_dir .. "/init.vim"
