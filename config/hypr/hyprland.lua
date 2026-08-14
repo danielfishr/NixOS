@@ -4,7 +4,6 @@ local menu = "fuzzel"
 local fileManager = "nautilus"
 
 hl.on("hyprland.start", function()
-  hl.exec_cmd("waybar")
   hl.exec_cmd("mako")
 end)
 
@@ -26,10 +25,7 @@ hl.config({
     gaps_out = 10,
     border_size = 4,
     col = {
-      active_border = {
-        colors = { "rgba(89b4faff)", "rgba(cba6f7ff)" },
-        angle = 45,
-      },
+      active_border = "rgba(fab387ff)",
       inactive_border = "rgba(45475aff)",
     },
     layout = "dwindle",

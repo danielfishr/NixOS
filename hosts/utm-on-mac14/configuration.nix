@@ -166,12 +166,16 @@ in
     codex
     codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
     csharp-ls
-    dotnet-sdk_8
-    dotnet-sdk_10
+    (dotnetCorePackages.combinePackages [
+      dotnetCorePackages.sdk_8_0
+      dotnetCorePackages.sdk_9_0
+      dotnetCorePackages.sdk_10_0
+    ])
     fzf
     fuzzel
     git
     grim
+    kdePackages.filelight
     kitty
     ltex-ls-plus
     lua-language-server
@@ -189,7 +193,6 @@ in
     typos-lsp
     vscode
     vscode-langservers-extracted
-    waybar
     wdisplays
     wl-clipboard
     yaml-language-server
