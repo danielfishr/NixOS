@@ -166,6 +166,7 @@ in
     codex
     codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
     csharp-ls
+    dotnet-sdk_8
     dotnet-sdk_10
     fzf
     fuzzel
