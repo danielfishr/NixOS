@@ -162,6 +162,7 @@ in
   '';
 
   environment.systemPackages = with pkgs; [
+    bibata-cursors
     brightnessctl
     codex
     codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -175,6 +176,7 @@ in
     fuzzel
     git
     grim
+    jetbrains.rider
     kdePackages.filelight
     kitty
     ltex-ls-plus

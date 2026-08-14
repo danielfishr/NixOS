@@ -4,11 +4,13 @@ local menu = "fuzzel"
 local fileManager = "nautilus"
 
 hl.on("hyprland.start", function()
+  hl.exec_cmd("hyprctl setcursor Bibata-Original-Amber 32")
   hl.exec_cmd("mako")
 end)
 
-hl.env("XCURSOR_SIZE", "24")
-hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("XCURSOR_THEME", "Bibata-Original-Amber")
+hl.env("XCURSOR_SIZE", "32")
+hl.env("HYPRCURSOR_SIZE", "32")
 hl.env("NIXOS_OZONE_WL", "1")
 
 hl.config({
@@ -63,7 +65,7 @@ hl.curve("easeOut", {
 })
 hl.animation({ leaf = "windows", enabled = true, speed = 4, bezier = "easeOut" })
 hl.animation({ leaf = "fade", enabled = true, speed = 4, bezier = "easeOut" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut", style = "slide" })
+hl.animation({ leaf = "workspaces", enabled = false })
 
 -- Shortcut reference
 --
@@ -82,7 +84,7 @@ hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "easeOut
 -- Focus and workspaces:
 --   Super+Arrow / Super+HJKL Move focus
 --   Super+0..9               Switch workspace (0 selects workspace 10)
---   Super+Shift+0..9         Move the active window to a workspace
+--   Super+F1..F10            Move the active window to a workspace
 --   Super+mouse wheel        Cycle workspaces
 --   Super+left drag          Move a window
 --   Super+right drag         Resize a window
@@ -126,11 +128,11 @@ end
 for workspace = 1, 9 do
   local key = tostring(workspace)
   hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = workspace }))
-  hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = workspace }))
+  hl.bind(mainMod .. " + F" .. key, hl.dsp.window.move({ workspace = workspace }))
 end
 
 hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
-hl.bind(mainMod .. " + SHIFT + 0", hl.dsp.window.move({ workspace = 10 }))
+hl.bind(mainMod .. " + F10", hl.dsp.window.move({ workspace = 10 }))
 
 -- Cycle workspaces and move/resize windows with the mouse.
 hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
