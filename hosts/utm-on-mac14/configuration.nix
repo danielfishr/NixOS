@@ -192,6 +192,7 @@ in
     wdisplays
     wl-clipboard
     yaml-language-server
+    yazi
   ];
 
   system.stateVersion = "26.05";
