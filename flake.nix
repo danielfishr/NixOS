@@ -10,9 +10,9 @@
   };
 
   outputs = { codex-desktop-linux, nixpkgs, ... }: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.utm-on-mac14 = nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
-      modules = [ ./hosts/nixos/configuration.nix ];
+      modules = [ ./hosts/utm-on-mac14/configuration.nix ];
       specialArgs = { inherit codex-desktop-linux; };
     };
   };

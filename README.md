@@ -1,6 +1,6 @@
 # NixOS configuration
 
-Configuration for the `nixos` ARM64 UTM virtual machine.
+Configuration for the `utm-on-mac14` ARM64 UTM virtual machine.
 
 ## Apply
 
@@ -9,20 +9,20 @@ every rebuild uses the same Nixpkgs revision:
 
 ```sh
 git add flake.nix hosts
-./create-lock.sh
+./create-lock-utm-on-mac14.sh
 git add flake.lock
 ```
 
 Build the configuration without activating it:
 
 ```sh
-./build.sh
+./build-utm-on-mac14.sh
 ```
 
 Apply the configuration:
 
 ```sh
-./apply.sh
+./apply-utm-on-mac14.sh
 ```
 
 ## Neovim
@@ -32,7 +32,7 @@ current user's `~/.config/nvim/init.lua` or `init.vim` when present. Apply
 changes to the managed example with:
 
 ```sh
-./apply.sh
+./apply-utm-on-mac14.sh
 ```
 
 It prints `Hello world` when Neovim starts.
@@ -45,10 +45,11 @@ package uses OpenAI's signed Linux application payload.
 
 ## Hyprland
 
-The Hyprland configuration is managed in `config/hypr/hyprland.lua` and linked
-to `~/.config/hypr/hyprland.lua` when that path does not already exist. After
-applying the system configuration, log out and select **Hyprland** from GDM's
-session menu.
+Shared Hyprland settings are managed in `config/hypr/hyprland.lua`. Display
+settings specific to this virtual machine live in
+`hosts/utm-on-mac14/hyprland.lua`. Nix combines both into the managed
+`~/.config/hypr/hyprland.lua`. After applying the system configuration, log out
+and select **Hyprland** from GDM's session menu.
 
 Important defaults:
 
@@ -66,11 +67,11 @@ Important defaults:
 To label the generated boot entry:
 
 ```sh
-sudo nixos-rebuild switch --flake .#nixos --impure
+sudo nixos-rebuild switch --flake .#utm-on-mac14 --impure
 ```
 
 with `NIXOS_LABEL` set in the root environment, for example:
 
 ```sh
-sudo NIXOS_LABEL=utm-sharing nixos-rebuild switch --flake .#nixos --impure
+sudo NIXOS_LABEL=utm-sharing nixos-rebuild switch --flake .#utm-on-mac14 --impure
 ```

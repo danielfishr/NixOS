@@ -18,7 +18,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking = {
-    hostName = "nixos";
+    hostName = "utm-on-mac14";
     networkmanager.enable = true;
   };
 
@@ -145,7 +145,10 @@ in
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  environment.etc."hypr/hyprland.lua".source = ../../config/hypr/hyprland.lua;
+  environment.etc."hypr/hyprland.lua".text = ''
+    ${builtins.readFile ./hyprland.lua}
+    ${builtins.readFile ../../config/hypr/hyprland.lua}
+  '';
 
   systemd.tmpfiles.rules = [
     "d /home/dan/.config 0755 dan users -"
