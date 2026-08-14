@@ -44,8 +44,8 @@ in
   fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 
   services = {
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    displayManager.gdm.enable = false;
+    desktopManager.gnome.enable = false;
 
     xserver = {
       enable = true;
@@ -158,7 +158,7 @@ in
 
   environment.etc."xdg/kitty/kitty.conf".text = ''
     font_family JetBrainsMono Nerd Font
-    font_size 12.0
+    font_size 11.0
   '';
 
   environment.systemPackages = with pkgs; [
