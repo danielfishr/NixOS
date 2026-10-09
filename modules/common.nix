@@ -86,6 +86,15 @@ in
 
   programs = {
     firefox.enable = true;
+    git = {
+      enable = true;
+      config = {
+        user = {
+          name = "dan";
+          email = "danielfisher@outlook.com";
+        };
+      };
+    };
     hyprland.enable = true;
     zsh.enable = true;
 
