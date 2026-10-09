@@ -9,18 +9,15 @@
 
   networking.hostName = "g14";
 
-  # Provide TrueType font fallbacks for Steam and games.
-  fonts.packages = with pkgs; [
-    liberation_ttf
-    corefonts
-    noto-fonts
-  ];
-
   programs = {
-    # Install Steam and its NixOS integration only on the gaming laptop.
-    steam.enable = true;
-    # Add a Gamescope session for games that benefit from a nested compositor.
-    steam.gamescopeSession.enable = true;
+    steam = {
+      # Install Steam and its NixOS integration only on the gaming laptop.
+      enable = true;
+      # Provide TrueType font fallbacks inside Steam's runtime.
+      fontPackages = with pkgs; [ liberation_ttf corefonts noto-fonts ];
+      # Add a Gamescope session for games that benefit from a nested compositor.
+      gamescopeSession.enable = true;
+    };
     # Let games request temporary CPU scheduler and power-management tuning.
     gamemode.enable = true;
   };
