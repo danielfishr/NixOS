@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -8,6 +8,13 @@
   ];
 
   networking.hostName = "g14";
+
+  # Provide TrueType font fallbacks for Steam and games.
+  fonts.packages = with pkgs; [
+    liberation_ttf
+    corefonts
+    noto-fonts
+  ];
 
   programs = {
     # Install Steam and its NixOS integration only on the gaming laptop.
