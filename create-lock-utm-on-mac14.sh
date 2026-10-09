@@ -2,6 +2,4 @@
 
 set -euo pipefail
 
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
-
-nix --extra-experimental-features "nix-command flakes" flake lock
+exec bash "$(dirname -- "${BASH_SOURCE[0]}")/scripts/create-lock.sh" utm-on-mac14 "$@"

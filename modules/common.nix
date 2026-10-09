@@ -1,0 +1,212 @@
+{ codex-desktop-linux, config, pkgs, ... }:
+
+let
+  napNvim = pkgs.vimUtils.buildVimPlugin {
+    pname = "nap.nvim";
+    version = "98037cff";
+    src = pkgs.fetchFromGitHub {
+      owner = "liangxianzhe";
+      repo = "nap.nvim";
+      rev = "98037cff509a12412cf8f32d1b12a9fdcad558ad";
+      hash = "sha256-Qt3eZM8sBpQh8vOFhqa8k+xO+ey1TXQNzXdgfr6qkS0=";
+    };
+  };
+  # The release tag's archive no longer matches the hash in pinned Nixpkgs.
+  copilotLua = pkgs.vimPlugins.copilot-lua.overrideAttrs {
+    src = pkgs.fetchFromGitHub {
+      owner = "zbirenbaum";
+      repo = "copilot.lua";
+      rev = "b1482409cefe8b201f89122c682189fabf0436da";
+      hash = "sha256-05f76OeWBlFmlUh90tH4XMMKfNI1jnhuIJDqYPPQokA=";
+    };
+  };
+in
+
+{
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
+  networking = {
+    networkmanager.enable = true;
+  };
+
+  time.timeZone = "Europe/London";
+
+  i18n = {
+    defaultLocale = "en_GB.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_GB.UTF-8";
+      LC_IDENTIFICATION = "en_GB.UTF-8";
+      LC_MEASUREMENT = "en_GB.UTF-8";
+      LC_MONETARY = "en_GB.UTF-8";
+      LC_NAME = "en_GB.UTF-8";
+      LC_NUMERIC = "en_GB.UTF-8";
+      LC_PAPER = "en_GB.UTF-8";
+      LC_TELEPHONE = "en_GB.UTF-8";
+      LC_TIME = "en_GB.UTF-8";
+    };
+  };
+
+  console.keyMap = "uk";
+
+  fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
+
+  services = {
+    displayManager.gdm.enable = false;
+    desktopManager.gnome.enable = false;
+
+    xserver = {
+      enable = true;
+      xkb = {
+        layout = "gb";
+        variant = "";
+      };
+    };
+
+    printing.enable = true;
+    pulseaudio.enable = false;
+    udev.packages = [ pkgs.brightnessctl ];
+
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+  };
+
+  security.rtkit.enable = true;
+
+  users.users.dan = {
+    isNormalUser = true;
+    description = "dan";
+    extraGroups = [ "networkmanager" "video" "wheel" ];
+    shell = pkgs.zsh;
+  };
+
+  programs = {
+    firefox.enable = true;
+    hyprland.enable = true;
+    zsh.enable = true;
+
+    neovim = {
+      enable = true;
+      package = pkgs.neovim-unwrapped;
+      configure = {
+        customLuaRC = ''
+          ${builtins.readFile ../config/nvim/init.lua}
+
+          local config_dir = vim.fn.stdpath("config")
+          local init_lua = config_dir .. "/init.lua"
+          local init_vim = config_dir .. "/init.vim"
+
+          if vim.fn.filereadable(init_lua) == 1 then
+            dofile(init_lua)
+          elseif vim.fn.filereadable(init_vim) == 1 then
+            vim.cmd.source(vim.fn.fnameescape(init_vim))
+          end
+        '';
+        packages.default.start =
+          (with pkgs.vimPlugins; [
+            blink-cmp
+            codecompanion-nvim
+            conform-nvim
+            dracula-nvim
+            fzf-lua
+            gitsigns-nvim
+            lualine-nvim
+            marks-nvim
+            mason-lspconfig-nvim
+            mason-nvim
+            mini-align
+            mini-indentscope
+            mini-move
+            mini-splitjoin
+            noice-nvim
+            nui-nvim
+            nvim-lspconfig
+            nvim-notify
+            nvim-surround
+            nvim-tree-lua
+            nvim-treesitter
+            nvim-treesitter-context
+            nvim-treesitter-textobjects
+            nvim-web-devicons
+            plenary-nvim
+            render-markdown-nvim
+            rose-pine
+            vim-floaterm
+            which-key-nvim
+            yanky-nvim
+          ])
+          ++ [ napNvim copilotLua ];
+      };
+    };
+  };
+
+  nix = {
+    settings.experimental-features = [ "nix-command" "flakes" ];
+  };
+
+  nixpkgs.config.allowUnfree = true;
+
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  environment.etc."hypr/hyprland.lua".text = ''
+    ${builtins.readFile ../config/hypr/hyprland.lua}
+    ${config.environment.etc."hypr/host.lua".text}
+  '';
+
+  systemd.tmpfiles.rules = [
+    "d /home/dan/.config 0755 dan users -"
+    "d /home/dan/.config/hypr 0755 dan users -"
+    "L /home/dan/.config/hypr/hyprland.lua - - - - /etc/hypr/hyprland.lua"
+  ];
+
+  environment.etc."xdg/kitty/kitty.conf".text = ''
+    font_family JetBrainsMono Nerd Font
+    font_size 11.0
+  '';
+
+  environment.systemPackages = with pkgs; [
+    bibata-cursors
+    brightnessctl
+    codex
+    codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
+    csharp-ls
+    (dotnetCorePackages.combinePackages [
+      dotnetCorePackages.sdk_8_0
+      dotnetCorePackages.sdk_9_0
+      dotnetCorePackages.sdk_10_0
+    ])
+    fzf
+    fuzzel
+    git
+    grim
+    jetbrains.rider
+    kdePackages.filelight
+    kitty
+    ltex-ls-plus
+    lua-language-server
+    mako
+    nodejs_24
+    playerctl
+    pyright
+    python3
+    ripgrep
+    rust-analyzer
+    slurp
+    tree
+    tree-sitter
+    typescript-language-server
+    typos-lsp
+    vscode
+    vscode-langservers-extracted
+    wdisplays
+    wl-clipboard
+    yaml-language-server
+    yazi
+  ];
+
+  system.stateVersion = "26.05";
+}

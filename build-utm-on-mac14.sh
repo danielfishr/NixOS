@@ -2,8 +2,4 @@
 
 set -euo pipefail
 
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
-
-sudo nixos-rebuild build \
-  --flake .#utm-on-mac14 \
-  --option experimental-features "nix-command flakes"
+exec bash "$(dirname -- "${BASH_SOURCE[0]}")/scripts/build.sh" utm-on-mac14 "$@"

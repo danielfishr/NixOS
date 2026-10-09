@@ -4,13 +4,9 @@ local menu = "fuzzel"
 local fileManager = "nautilus"
 
 hl.on("hyprland.start", function()
-  hl.exec_cmd("hyprctl setcursor Bibata-Original-Amber 32")
   hl.exec_cmd("mako")
 end)
 
-hl.env("XCURSOR_THEME", "Bibata-Original-Amber")
-hl.env("XCURSOR_SIZE", "32")
-hl.env("HYPRCURSOR_SIZE", "32")
 hl.env("NIXOS_OZONE_WL", "1")
 
 hl.config({

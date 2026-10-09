@@ -9,11 +9,17 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
-  outputs = { codex-desktop-linux, nixpkgs, ... }: {
-    nixosConfigurations.utm-on-mac14 = nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [ ./hosts/utm-on-mac14/configuration.nix ];
-      specialArgs = { inherit codex-desktop-linux; };
+  outputs = { codex-desktop-linux, nixpkgs, ... }:
+    let
+      mkHost = system: configuration: nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [ configuration ];
+        specialArgs = { inherit codex-desktop-linux; };
+      };
+    in {
+      nixosConfigurations = {
+        utm-on-mac14 = mkHost "aarch64-linux" ./hosts/utm-on-mac14/configuration.nix;
+        g14 = mkHost "x86_64-linux" ./hosts/g14/configuration.nix;
+      };
     };
-  };
 }

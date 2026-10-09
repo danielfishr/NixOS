@@ -4,9 +4,9 @@
   imports = [
     ../../modules/common.nix
     ./hardware-configuration.nix
+    ./laptop.nix
   ];
 
-  networking.hostName = "utm-on-mac14";
-  services.spice-vdagentd.enable = true;
+  networking.hostName = "g14";
   environment.etc."hypr/host.lua".text = builtins.readFile ./hyprland.lua;
 }

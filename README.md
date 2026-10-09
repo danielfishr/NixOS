@@ -1,6 +1,9 @@
 # NixOS configuration
 
-Configuration for the `utm-on-mac14` ARM64 UTM virtual machine.
+Configurations for the `utm-on-mac14` ARM64 UTM virtual machine and the
+`g14` x86_64 laptop. Both share packages and desktop settings in
+`modules/common.nix`; hardware, hostnames and display settings live under
+`hosts/<host>/`.
 
 ## Apply
 
@@ -39,7 +42,8 @@ It prints `Hello world` when Neovim starts.
 
 ## Codex
 
-The system includes both the Codex CLI and the ARM64 Linux desktop app. Run
+The system includes both the Codex CLI and the Linux desktop app for the
+selected host architecture. Run
 `codex` in a terminal, or launch **ChatGPT Community** from Fuzzel. The desktop
 package uses OpenAI's signed Linux application payload.
 
@@ -75,3 +79,42 @@ with `NIXOS_LABEL` set in the root environment, for example:
 ```sh
 sudo NIXOS_LABEL=utm-sharing nixos-rebuild switch --flake .#utm-on-mac14 --impure
 ```
+
+## G14
+
+The checked-in hardware configuration contains this GA401QM laptop's generated
+filesystem UUIDs and boot modules. Model-specific settings in
+`hosts/g14/laptop.nix` enable AMD graphics and microcode, NVIDIA RTX 3060 open
+kernel modules with PRIME offload and power management, ASUS controls, SSD TRIM
+and keyboard fixes. The configuration no longer imports files from `/etc/nixos`.
+
+The desktop normally uses the AMD GPU. To run an application on the RTX 3060:
+
+```sh
+nvidia-offload <command>
+```
+
+Use `asusctl` for ASUS controls and `powerprofilesctl` to select a power profile.
+The GPU addresses were verified on this machine. Hardware settings follow the
+[upstream GA401 profile](https://github.com/NixOS/nixos-hardware/blob/master/asus/zephyrus/ga401/default.nix).
+
+Add the new modules and scripts to Git before using the flake:
+
+```sh
+git add flake.nix modules hosts scripts *.sh
+./create-lock-g14.sh
+./build-g14.sh
+./apply-g14.sh
+```
+
+To update the shared lock file, validate the selected host and apply it:
+
+```sh
+./update-lock-g14.sh
+```
+
+The Mac scripts continue to target `utm-on-mac14`. Both sets of scripts
+use the same implementations under `scripts/` and the same `flake.lock`.
+Update scripts evaluate only their selected host before applying it, so Mac
+updates validate the Mac configuration independently. G14 display settings
+use the preferred mode and automatic scale instead of the UTM virtual outputs.
