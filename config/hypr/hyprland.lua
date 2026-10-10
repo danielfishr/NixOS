@@ -5,6 +5,7 @@ local fileManager = "nautilus"
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("mako")
+  hl.exec_cmd("waybar --config /etc/xdg/waybar/config.jsonc --style /etc/xdg/waybar/style.css")
 end)
 
 hl.env("NIXOS_OZONE_WL", "1")
@@ -69,6 +70,7 @@ hl.animation({ leaf = "workspaces", enabled = false })
 --   Super+Return             Open Kitty
 --   Super+D                  Open the application launcher
 --   Super+E                  Open the file manager
+--   Super+B                  Show/hide Waybar
 --   Super+O                  Focus the previously selected window
 --   Super+X                  Close the active window
 --   Super+Shift+E            Exit Hyprland
@@ -96,6 +98,7 @@ hl.animation({ leaf = "workspaces", enabled = false })
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("pkill -USR1 -x waybar"))
 hl.bind(mainMod .. " + O", hl.dsp.focus({ last = true }))
 hl.bind(mainMod .. " + X", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())

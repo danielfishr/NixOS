@@ -60,6 +60,7 @@ Important defaults:
 - `Super+Return`: open Kitty
 - `Super+D`: open the application launcher
 - `Super+E`: open Files
+- `Super+B`: show/hide Waybar
 - `Super+O`: focus the previously selected window
 - `Super+X`: close the active window
 - `Super+Shift+E`: exit Hyprland
@@ -67,6 +68,16 @@ Important defaults:
 - `Super+0`: switch to workspace 10
 
 `Super+Q` is deliberately unbound.
+
+Waybar starts hidden and overlays windows when shown, so it reserves no screen
+space and toggling it does not resize windows. Both hosts use the shared settings
+in `config/waybar/config.jsonc` and `config/waybar/style.css`. The bar displays
+workspaces, the date/time, CPU and memory usage, network status, volume, battery
+status (where available), and a system tray. Clicking the volume toggles mute.
+Battery colours indicate low charge; they do not send notifications.
+
+After changing the configuration, rebuild and start a new Hyprland session.
+Add new files under `config/waybar/` to Git before rebuilding with the flake.
 
 To label the generated boot entry:
 

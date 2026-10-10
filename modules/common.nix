@@ -96,6 +96,7 @@ in
       };
     };
     hyprland.enable = true;
+    waybar.enable = true;
     zsh.enable = true;
 
     neovim = {
@@ -166,6 +167,9 @@ in
     ${config.environment.etc."hypr/host.lua".text}
   '';
 
+  environment.etc."xdg/waybar/config.jsonc".source = ../config/waybar/config.jsonc;
+  environment.etc."xdg/waybar/style.css".source = ../config/waybar/style.css;
+
   systemd.tmpfiles.rules = [
     "d /home/dan/.config 0755 dan users -"
     "d /home/dan/.config/hypr 0755 dan users -"
@@ -200,6 +204,7 @@ in
     mako
     nodejs_24
     playerctl
+    procps
     pyright
     python3
     ripgrep
