@@ -37,5 +37,15 @@
 
   # Provide a graphical Bluetooth pairing tool for controllers.
   services.blueman.enable = true;
+
+  # Caps Lock is Escape when tapped and Control when used with another key.
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ];
+      settings.main.capslock = "overload(control, esc)";
+    };
+  };
+
   environment.etc."hypr/host.lua".text = builtins.readFile ./hyprland.lua;
 }
