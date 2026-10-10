@@ -64,35 +64,58 @@ hl.animation({ leaf = "windows", enabled = true, speed = 4, bezier = "easeOut" }
 hl.animation({ leaf = "fade", enabled = true, speed = 4, bezier = "easeOut" })
 hl.animation({ leaf = "workspaces", enabled = false })
 
--- Shortcut reference
+-- Shortcut reference (Super is the Windows key; letter keys do not need Shift).
 --
--- Applications and windows:
+-- Applications and session:
 --   Super+Return             Open Kitty
---   Super+D                  Open the application launcher
---   Super+E                  Open the file manager
---   Super+B                  Show/hide Waybar
---   Super+O                  Focus the previously selected window
+--   Super+D                  Open Fuzzel, the application launcher
+--   Super+E                  Open Nautilus, the configured file manager
+--   Super+Shift+E            Exit Hyprland (end the session)
+--
+-- Windows and layout:
 --   Super+Q                  Close the active window
---   Super+X                  Dismiss the latest Mako notification
---   Super+Shift+E            Exit Hyprland
+--   Super+O                  Focus the previously selected window
 --   Super+F                  Toggle fullscreen
 --   Super+V                  Toggle floating mode
 --   Super+P                  Toggle pseudotiling
---   Super+Shift+J            Toggle the split direction
+--   Super+Shift+J            Toggle the active dwindle split direction
+--
+-- Bar and notifications:
+--   Super+B                  Show/hide Waybar (starts hidden; no reserved space)
+--   Super+X                  Dismiss the latest Mako notification
 --
 -- Focus and workspaces:
---   Super+Arrow / Super+HJKL Move focus
---   Super+0..9               Switch workspace (0 selects workspace 10)
---   Super+F1..F10            Move the active window to a workspace
---   Super+mouse wheel        Cycle workspaces
---   Super+left drag          Move a window
---   Super+right drag         Resize a window
+--   Super+Left / Super+H     Focus the window to the left
+--   Super+Down / Super+J     Focus the window below
+--   Super+Up / Super+K       Focus the window above
+--   Super+Right / Super+L    Focus the window to the right
+--   Super+1..9               Switch to workspace 1..9
+--   Super+0                  Switch to workspace 10
+--   Super+F1..F9             Move the active window to workspace 1..9
+--   Super+F10                Move the active window to workspace 10
+--   Super+wheel down         Next existing workspace
+--   Super+wheel up           Previous existing workspace
+--   Super+left-button drag   Move a window
+--   Super+right-button drag  Resize a window
 --
 -- Screenshots:
---   Print                    Select an area and copy it to the clipboard
---   Super+Print              Copy the entire screen to the clipboard
+--   Print                    Select an area; copy the screenshot to clipboard
+--   Super+Print              Copy all outputs as one screenshot to clipboard
+--   Screenshots are not saved to files.
 --
--- Hardware keys control volume, playback and display brightness.
+-- Hardware keys (no Super required; also work while the session is locked):
+--   XF86AudioRaiseVolume     Raise volume by 5%, capped at 100%; repeats on hold
+--   XF86AudioLowerVolume     Lower volume by 5%; repeats on hold
+--   XF86AudioMute            Toggle output mute
+--   XF86AudioPlay            Toggle media play/pause
+--   XF86AudioNext            Next media track
+--   XF86AudioPrev            Previous media track
+--   XF86MonBrightnessUp      Raise display brightness by 5%; repeats on hold
+--   XF86MonBrightnessDown    Lower display brightness by 5%; repeats on hold
+--
+-- G14 only (system-wide keyd mapping, not a Hyprland bind):
+--   Caps Lock tapped alone   Escape
+--   Caps Lock held + key     Control + that key
 
 -- Applications and session controls.
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))

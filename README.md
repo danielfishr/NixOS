@@ -68,6 +68,11 @@ Important defaults:
 - `Super+1` through `Super+9`: switch to workspaces 1–9
 - `Super+0`: switch to workspace 10
 
+The complete shortcut reference is in the comments above the bindings in
+`config/hypr/hyprland.lua`, including window layout controls, directional focus,
+workspace moves, mouse actions, screenshots, media keys and the G14 Caps Lock
+mapping. Super means the Windows key.
+
 Mako has no other notification keyboard shortcuts configured. To dismiss all
 notifications from a terminal, run `makoctl dismiss --all`.
 
