@@ -72,7 +72,8 @@ hl.animation({ leaf = "workspaces", enabled = false })
 --   Super+E                  Open the file manager
 --   Super+B                  Show/hide Waybar
 --   Super+O                  Focus the previously selected window
---   Super+X                  Close the active window
+--   Super+Q                  Close the active window
+--   Super+X                  Dismiss the latest Mako notification
 --   Super+Shift+E            Exit Hyprland
 --   Super+F                  Toggle fullscreen
 --   Super+V                  Toggle floating mode
@@ -92,7 +93,6 @@ hl.animation({ leaf = "workspaces", enabled = false })
 --   Super+Print              Copy the entire screen to the clipboard
 --
 -- Hardware keys control volume, playback and display brightness.
--- Super+Q is deliberately left unbound.
 
 -- Applications and session controls.
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
@@ -101,7 +101,8 @@ hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 -- NixOS wraps GTK applications, changing Waybar's process name.
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("pkill -USR1 -x 'waybar|[.]waybar-wrapped'"))
 hl.bind(mainMod .. " + O", hl.dsp.focus({ last = true }))
-hl.bind(mainMod .. " + X", hl.dsp.window.close())
+hl.bind(mainMod .. " + Q", hl.dsp.window.close())
+hl.bind(mainMod .. " + X", hl.dsp.exec_cmd("makoctl dismiss"))
 hl.bind(mainMod .. " + SHIFT + E", hl.dsp.exit())
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen({ action = "toggle" }))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))

@@ -62,12 +62,14 @@ Important defaults:
 - `Super+E`: open Files
 - `Super+B`: show/hide Waybar
 - `Super+O`: focus the previously selected window
-- `Super+X`: close the active window
+- `Super+Q`: close the active window
+- `Super+X`: dismiss the latest Mako notification
 - `Super+Shift+E`: exit Hyprland
 - `Super+1` through `Super+9`: switch to workspaces 1–9
 - `Super+0`: switch to workspace 10
 
-`Super+Q` is deliberately unbound.
+Mako has no other notification keyboard shortcuts configured. To dismiss all
+notifications from a terminal, run `makoctl dismiss --all`.
 
 Waybar starts hidden and overlays windows when shown, so it reserves no screen
 space and toggling it does not resize windows. Both hosts use the shared settings
