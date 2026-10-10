@@ -14,8 +14,10 @@ hl.config({
   input = {
     kb_layout = "gb",
     follow_mouse = 1,
+    -- Apple-style natural scrolling for mouse wheels on both hosts.
+    natural_scroll = true,
     touchpad = {
-      natural_scroll = false,
+      natural_scroll = true,
       tap_to_click = true,
     },
   },

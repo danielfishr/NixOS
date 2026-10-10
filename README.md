@@ -73,6 +73,9 @@ The complete shortcut reference is in the comments above the bindings in
 workspace moves, mouse actions, screenshots, media keys and the G14 Caps Lock
 mapping. Super means the Windows key.
 
+Both G14 and UTM-on-Mac14 use Apple-style natural scrolling for mouse wheels
+and touchpads.
+
 Mako has no other notification keyboard shortcuts configured. To dismiss all
 notifications from a terminal, run `makoctl dismiss --all`.
 
