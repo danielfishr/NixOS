@@ -117,8 +117,8 @@ nvidia-offload <command>
 
 Use `asusctl` for ASUS controls and `powerprofilesctl` to select a power profile.
 On the G14, keyd maps Caps Lock to Escape when tapped alone and Control when
-held with another key. This applies to all keyboards and works outside Hyprland
-as well.
+held with another key. Ctrl+M and Caps Lock+M send Return. These mappings apply
+to all keyboards and work outside Hyprland as well.
 The GPU addresses were verified on this machine. Hardware settings follow the
 [upstream GA401 profile](https://github.com/NixOS/nixos-hardware/blob/master/asus/zephyrus/ga401/default.nix).
 

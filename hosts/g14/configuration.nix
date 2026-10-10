@@ -43,7 +43,11 @@
     enable = true;
     keyboards.default = {
       ids = [ "*" ];
-      settings.main.capslock = "overload(control, esc)";
+      settings = {
+        main.capslock = "overload(control, esc)";
+        # Both physical Control and held Caps Lock activate this layer.
+        control.m = "enter";
+      };
     };
   };
 

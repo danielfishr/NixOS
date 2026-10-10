@@ -115,9 +115,10 @@ hl.animation({ leaf = "workspaces", enabled = false })
 --   XF86MonBrightnessUp      Raise display brightness by 5%; repeats on hold
 --   XF86MonBrightnessDown    Lower display brightness by 5%; repeats on hold
 --
--- G14 only (system-wide keyd mapping, not a Hyprland bind):
+-- G14 only (system-wide keyd mappings, not Hyprland binds):
 --   Caps Lock tapped alone   Escape
 --   Caps Lock held + key     Control + that key
+--   Ctrl+M / Caps Lock+M     Return (overrides Control+M)
 
 -- Applications and session controls.
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
