@@ -1,9 +1,9 @@
--- Use each connected display's preferred mode with a consistent fractional scale.
+-- Use each connected display's preferred mode with native 1x scaling.
 hl.monitor({
   output = "",
   mode = "preferred",
   position = "auto",
-  scale = 1.5,
+  scale = 1,
 })
 
 hl.config({
