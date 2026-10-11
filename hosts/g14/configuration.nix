@@ -38,6 +38,10 @@
   # Provide a graphical Bluetooth pairing tool for controllers.
   services.blueman.enable = true;
 
+  environment.systemPackages = with pkgs; [
+    adwaita-icon-theme
+  ];
+
   # Caps Lock is Escape when tapped and Control when used with another key.
   services.keyd = {
     enable = true;

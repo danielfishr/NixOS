@@ -1,4 +1,4 @@
-{ codex-desktop-linux, config, pkgs, ... }:
+{ browserPackages, codex-desktop-linux, config, pkgs, ... }:
 
 let
   napNvim = pkgs.vimUtils.buildVimPlugin {
@@ -19,6 +19,71 @@ let
       rev = "b1482409cefe8b201f89122c682189fabf0436da";
       hash = "sha256-05f76OeWBlFmlUh90tH4XMMKfNI1jnhuIJDqYPPQokA=";
     };
+  };
+  filesApp = pkgs.writeShellApplication {
+    name = "files-app";
+    runtimeInputs = [ pkgs.nautilus ];
+    text = ''
+      exec nautilus --new-window "$@"
+    '';
+  };
+  hyprWindowSwitcher = pkgs.writeShellApplication {
+    name = "hypr-window-switcher";
+    runtimeInputs = [ pkgs.coreutils pkgs.fuzzel pkgs.gawk pkgs.hyprland pkgs.jq ];
+    text = ''
+      log="$XDG_RUNTIME_DIR/hypr-window-switcher.log"
+
+      entries="$(
+        hyprctl clients -j \
+          | jq -r '
+              def clean: tostring | gsub("[\t\r\n]+"; " ");
+
+              [.[] | select(.mapped and .address != null)]
+              | sort_by(.workspace.id, .class, .title)
+              | .[]
+              | [
+                  .address,
+                  (.workspace.id | tostring),
+                  "ws \(.workspace.name | clean) | \(.class | clean) | \((.title // "") | clean)"
+                ]
+              | @tsv
+            '
+      )"
+
+      selection="$(
+        printf '%s\n' "$entries" \
+          | cut -f3- \
+          | fuzzel --dmenu --only-match --no-sort --prompt "Jump to app: "
+      )" || exit 0
+
+      match="$(
+        awk -F '\t' -v selection="$selection" '$3 == selection { print; exit }' <<<"$entries"
+      )"
+
+      {
+        printf 'selection=%q\n' "$selection"
+        printf 'match=%q\n' "$match"
+      } >"$log"
+
+      if [[ -z "$match" ]]; then
+        printf 'match=failed\n' >>"$log"
+        exit 0
+      fi
+
+      IFS=$'\t' read -r address workspace _ <<<"$match"
+
+      if ! hyprctl dispatch "hl.dsp.focus({ workspace = \"$workspace\" })" >>"$log" 2>&1; then
+        printf 'workspace_dispatch=failed workspace=%q\n' "$workspace" >>"$log"
+        exit 1
+      fi
+
+      sleep 0.05
+
+      if ! hyprctl dispatch "hl.dsp.focus({ window = \"address:$address\" })" >>"$log" 2>&1; then
+        printf 'focus_dispatch=failed address=%q\n' "$address" >>"$log"
+        exit 1
+      fi
+    '';
   };
 in
 
@@ -64,6 +129,8 @@ in
     };
 
     printing.enable = true;
+    # Nautilus support for trash, removable drives and network locations.
+    gvfs.enable = true;
     pulseaudio.enable = false;
     udev.packages = [ pkgs.brightnessctl ];
 
@@ -96,6 +163,7 @@ in
       };
     };
     hyprland.enable = true;
+    nano.enable = false;
     waybar.enable = true;
     zsh.enable = true;
 
@@ -160,7 +228,11 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables = {
+    EDITOR = "nvim";
+    NIXOS_OZONE_WL = "1";
+    VISUAL = "nvim";
+  };
 
   environment.etc."hypr/hyprland.lua".text = ''
     ${builtins.readFile ../config/hypr/hyprland.lua}
@@ -182,7 +254,10 @@ in
   '';
 
   environment.systemPackages = with pkgs; [
+    _1password-cli
+    _1password-gui
     bibata-cursors
+    btop
     brightnessctl
     codex
     codex-desktop-linux.packages.${pkgs.stdenv.hostPlatform.system}.default
@@ -196,12 +271,17 @@ in
     fuzzel
     git
     grim
+    filesApp
+    hyprWindowSwitcher
     jetbrains.rider
     kdePackages.filelight
     kitty
+    libreoffice-qt
     ltex-ls-plus
     lua-language-server
     mako
+    mpv
+    nautilus
     nodejs_24
     playerctl
     procps
@@ -220,6 +300,9 @@ in
     wl-clipboard
     yaml-language-server
     yazi
+  ] ++ [
+    browserPackages.chromium
+    browserPackages.librewolf
   ];
 
   system.stateVersion = "26.05";

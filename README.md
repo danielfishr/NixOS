@@ -47,6 +47,65 @@ selected host architecture. Run
 `codex` in a terminal, or launch **ChatGPT Community** from Fuzzel. The desktop
 package uses OpenAI's signed Linux application payload.
 
+## Browsers and independent updates
+
+Both hosts include Chromium (the open-source browser, not Google Chrome) and
+LibreWolf. Launch them from Fuzzel or run `chromium` / `librewolf` in a terminal.
+Firefox remains available.
+
+Each browser uses its own Nixpkgs input pinned in `flake.lock`:
+
+| Browser | Input | Update command |
+| --- | --- | --- |
+| Chromium | `chromium-nixpkgs` | `nix flake update chromium-nixpkgs` |
+| LibreWolf | `librewolf-nixpkgs` | `nix flake update librewolf-nixpkgs` |
+
+These inputs track `nixos-26.05`. Updating one selects the browser version
+available on that branch and its dependencies, while leaving the other browser,
+the main `nixpkgs` input and the Codex desktop input pinned. A branch update does
+not necessarily contain a new browser version. Do not add `follows = "nixpkgs"`
+to these inputs, since that would tie their updates to the system again.
+
+For example, update only Chromium, review the lock change, build and apply on
+the G14:
+
+```sh
+nix flake update chromium-nixpkgs
+git diff -- flake.lock
+./build-g14.sh
+./apply-g14.sh
+git add flake.lock
+git commit -m "Update Chromium package pin"
+```
+
+For LibreWolf, use `nix flake update librewolf-nixpkgs` instead. To update both
+browsers together without updating other inputs:
+
+```sh
+nix flake update chromium-nixpkgs librewolf-nixpkgs
+```
+
+On the Mac VM, use `./build-utm-on-mac14.sh` and `./apply-utm-on-mac14.sh`.
+The pins are shared by both hosts; rebuild each host to use the updated browsers.
+The existing `update-lock-*.sh` scripts update all inputs and apply the system,
+so use the targeted commands above for browser-only updates. Nix documents
+[selective input updates](https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake-update).
+
+## Video player and file manager
+
+Both hosts include mpv for video playback and Nautilus (Files) as the graphical
+file manager. Open Files with `Super+E` or launch `nautilus` from a terminal.
+GVfs provides support for trash, removable drives and network locations.
+
+To play a video:
+
+```sh
+mpv /path/to/video.mp4
+```
+
+In mpv, Space toggles pause, Left/Right seek, `f` toggles fullscreen and `q`
+quits. The player also provides mouse controls over the video.
+
 ## Hyprland
 
 Shared Hyprland settings are managed in `config/hypr/hyprland.lua`. Display

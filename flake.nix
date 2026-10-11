@@ -7,14 +7,23 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    # Independent pins: updating one browser does not update the system or the other.
+    chromium-nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    librewolf-nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
   };
 
-  outputs = { codex-desktop-linux, nixpkgs, ... }:
+  outputs = { codex-desktop-linux, nixpkgs, chromium-nixpkgs, librewolf-nixpkgs, ... }:
     let
       mkHost = system: configuration: nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [ configuration ];
-        specialArgs = { inherit codex-desktop-linux; };
+        specialArgs = {
+          inherit codex-desktop-linux;
+          browserPackages = {
+            chromium = chromium-nixpkgs.legacyPackages.${system}.chromium;
+            librewolf = librewolf-nixpkgs.legacyPackages.${system}.librewolf;
+          };
+        };
       };
     in {
       nixosConfigurations = {

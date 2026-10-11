@@ -1,7 +1,7 @@
 local mainMod = "SUPER"
 local terminal = "kitty"
 local menu = "fuzzel"
-local fileManager = "nautilus"
+local fileManager = "files-app"
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("mako")
@@ -54,6 +54,7 @@ hl.config({
   },
   misc = {
     disable_hyprland_logo = true,
+    disable_splash_rendering = true,
     force_default_wallpaper = 0,
   },
 })
@@ -71,7 +72,8 @@ hl.animation({ leaf = "workspaces", enabled = false })
 -- Applications and session:
 --   Super+Return             Open Kitty
 --   Super+D                  Open Fuzzel, the application launcher
---   Super+E                  Open Nautilus, the configured file manager
+--   Super+S                  Fuzzy switch to an open app/window
+--   Super+E                  Open Files, the configured file manager
 --   Super+Shift+E            Exit Hyprland (end the session)
 --
 -- Windows and layout:
@@ -95,8 +97,8 @@ hl.animation({ leaf = "workspaces", enabled = false })
 --   Super+0                  Switch to workspace 10
 --   Super+F1..F9             Move the active window to workspace 1..9
 --   Super+F10                Move the active window to workspace 10
---   Super+wheel down         Next existing workspace
---   Super+wheel up           Previous existing workspace
+--   Super+Tab                Next existing workspace
+--   Super+Shift+Tab          Previous existing workspace
 --   Super+left-button drag   Move a window
 --   Super+right-button drag  Resize a window
 --
@@ -123,6 +125,7 @@ hl.animation({ leaf = "workspaces", enabled = false })
 -- Applications and session controls.
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + D", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + S", hl.dsp.exec_cmd("hypr-window-switcher"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 -- NixOS wraps GTK applications, changing Waybar's process name.
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("pkill -USR1 -x 'waybar|[.]waybar-wrapped'"))
@@ -161,9 +164,9 @@ end
 hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = 10 }))
 hl.bind(mainMod .. " + F10", hl.dsp.window.move({ workspace = 10 }))
 
--- Cycle workspaces and move/resize windows with the mouse.
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
+-- Cycle workspaces with the keyboard and move/resize windows with the mouse.
+hl.bind(mainMod .. " + Tab", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
