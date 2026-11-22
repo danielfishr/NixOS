@@ -3,7 +3,7 @@
 {
   imports = [
     ../../modules/common.nix
-    ../../modules/hyprcorrect.nix
+    ../../modules/spelling.nix
     ./hardware-configuration.nix
     ./laptop.nix
   ];
@@ -41,6 +41,7 @@
 
   environment.systemPackages = with pkgs; [
     adwaita-icon-theme
+    jellyfin-desktop
   ];
 
   # Caps Lock is Escape when tapped and Control when used with another key.

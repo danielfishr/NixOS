@@ -125,6 +125,9 @@ mpv /path/to/video.mp4
 In mpv, Space toggles pause, Left/Right seek, `f` toggles fullscreen and `q`
 quits. The player also provides mouse controls over the video.
 
+The G14 also includes Jellyfin Desktop (`pkgs.jellyfin-desktop`). Launch
+Jellyfin Desktop from Fuzzel and enter your Jellyfin server address to connect.
+
 ## Hyprland
 
 Shared Hyprland settings are managed in `config/hypr/hyprland.lua`. Display
@@ -134,8 +137,8 @@ settings specific to this virtual machine live in
 and select **Hyprland** from GDM's session menu.
 
 See [Shortcuts](#shortcuts) for all configured bindings. Their source is
-`config/hypr/hyprland.lua`; HyprCorrect bindings are managed in
-`config/hyprcorrect/config.toml`.
+`config/hypr/hyprland.lua`; the G14 spelling shortcut is managed in
+`hosts/g14/hyprland.lua`.
 
 Both G14 and UTM-on-Mac14 use Apple-style natural scrolling for mouse wheels
 and touchpads.
@@ -170,7 +173,7 @@ sudo NIXOS_LABEL=utm-sharing nixos-rebuild switch --flake .#utm-on-mac14 --impur
 `Super` means the Windows key. `Hyper` means holding `Ctrl+Shift+Alt+Super`
 together; no dedicated Hyper key is configured. Letter keys below do not need
 Shift unless it is explicitly listed. Hyprland shortcuts apply to both hosts;
-HyprCorrect and the keyd mappings apply only to the G14.
+Spelling suggestions and the keyd mappings apply only to the G14.
 
 ### Applications and session
 
@@ -181,6 +184,9 @@ HyprCorrect and the keyd mappings apply only to the G14.
 | `Super+S` | Fuzzy switch to an open app/window |
 | `Super+E` | Open Files |
 | `Super+Shift+E` | Exit Hyprland |
+
+Jellyfin Desktop is installed on the G14 and can be launched through Fuzzel
+with `Super+D`. No dedicated Jellyfin shortcut is configured.
 
 ### Windows and layout
 
@@ -241,31 +247,30 @@ These require no Super modifier and also work while the session is locked.
 | `XF86MonBrightnessUp` | Raise display brightness by 5%; repeats on hold |
 | `XF86MonBrightnessDown` | Lower display brightness by 5%; repeats on hold |
 
-### HyprCorrect (G14)
+### Spelling suggestions (G14)
 
 | Shortcut | Action |
 | --- | --- |
-| `Hyper+F` (`Ctrl+Shift+Alt+Super+F`) | Correct the last word |
-| `Hyper+S` (`Ctrl+Shift+Alt+Super+S`) | Correct the last sentence |
-| `Hyper+R` (`Ctrl+Shift+Alt+Super+R`) | Review a correction before applying |
+| `Hyper+F7` (`Ctrl+Shift+Alt+Super+F7`) | Show Aspell `en_GB` spelling suggestions in Rofi for the copied word |
 
-These become active after applying the G14 configuration and starting a new
-login session, so the `input` group membership takes effect.
+Copy a single word, press `Hyper+F7`, choose a suggestion, then paste it over
+the selected word. Escape cancels without changing the clipboard. No automatic
+typing or background keyboard monitoring is used. Apply the configuration and
+start a new Hyprland session to activate the binding.
 
 ### Available Hyper shortcuts
 
-Among the A-Z letter keys, only `Hyper+F`, `Hyper+R` and `Hyper+S` are assigned
-by this repository. These combinations are available for new bindings:
+All A-Z Hyper letter combinations are unassigned by this repository and are
+available for new bindings. `Hyper+F7` is assigned to spelling suggestions.
 
 | Shortcut | Status |
 | --- | --- |
 | `Hyper+A`, `Hyper+B`, `Hyper+C`, `Hyper+D`, `Hyper+E` | Unassigned |
-| `Hyper+G`, `Hyper+H`, `Hyper+I`, `Hyper+J`, `Hyper+K` | Unassigned |
+| `Hyper+F`, `Hyper+G`, `Hyper+H`, `Hyper+I`, `Hyper+J`, `Hyper+K` | Unassigned |
 | `Hyper+L`, `Hyper+M`, `Hyper+N`, `Hyper+O`, `Hyper+P`, `Hyper+Q` | Unassigned |
-| `Hyper+T`, `Hyper+U`, `Hyper+V`, `Hyper+W`, `Hyper+X`, `Hyper+Y`, `Hyper+Z` | Unassigned |
+| `Hyper+R`, `Hyper+S`, `Hyper+T`, `Hyper+U`, `Hyper+V`, `Hyper+W`, `Hyper+X`, `Hyper+Y`, `Hyper+Z` | Unassigned |
 
-`Hyper+L`, HyprCorrect's upstream LLM-review default, is explicitly disabled
-here because no LLM provider is configured. This availability list covers the
+This availability list covers the
 checked-in configuration; individual applications can define their own keys.
 Hyper already includes Shift, so `Hyper+Shift+F` is the same chord as `Hyper+F`.
 
@@ -281,31 +286,29 @@ These system-wide keyd mappings also work outside Hyprland.
 
 ## G14
 
-### HyprCorrect
+### Aspell and Rofi
 
-The G14 installs HyprCorrect 0.6.0 from a checksum-pinned upstream Linux release
-using `packages/hyprcorrect.nix` and `modules/hyprcorrect.nix`. It starts with
-Hyprland and uses offline Spellbook correction for both words and sentences.
+The G14 installs Aspell with the English dictionaries, Rofi with Wayland support,
+and the `spelling-suggestions` command using `modules/spelling.nix`.
+The dictionary is British English (`en_GB`), set in `/etc/aspell.conf` and
+explicitly selected by `config/spelling/suggestions.py`.
 
-See [HyprCorrect shortcuts](#hyprcorrect-g14) for the configured correction keys.
-
-Edit `config/hyprcorrect/config.toml` for persistent settings. The startup
-command copies this managed configuration to a private, user-owned regular file
-at `~/.config/hyprcorrect/config.toml`, because HyprCorrect refuses symlinks.
-Changes saved through `hyprcorrect prefs` last until the next Hyprland session.
-The bundled spelling dictionary is American English.
+See [Spelling suggestions](#spelling-suggestions-g14) for the `Hyper+F7` workflow.
+Suggestions are generated locally and the chosen replacement is copied to the
+clipboard for pasting. Cancelling or finding no suggestions preserves the
+clipboard. HyprCorrect's daemon, package, configuration and `input` group
+requirement have been removed from the system configuration.
 
 Stage the new files before building with the Git flake:
 
 ```sh
-git add packages/hyprcorrect.nix modules/hyprcorrect.nix config/hyprcorrect/config.toml hosts/g14/configuration.nix hosts/g14/hyprland.lua README.md
+git add -A -- modules config packages hosts/g14 README.md
 ./build-g14.sh
-./apply-g14.sh hyprcorrect
+./apply-g14.sh spelling
 ```
 
-Log out and back in after applying so the new `input` group membership takes
-effect. HyprCorrect needs this group to read keyboard events. The daemon
-registers its correction shortcuts with Hyprland automatically.
+Log out and back in after applying to load the new binding and drop the old
+`input` group membership. User-local HyprCorrect preferences are not deleted.
 
 ### Hardware
 

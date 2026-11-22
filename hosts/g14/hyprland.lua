@@ -1,8 +1,10 @@
 -- Use each connected display's preferred mode with native 1x scaling.
 hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl setcursor Adwaita 24")
-  hl.exec_cmd("hyprcorrect-session")
 end)
+
+-- Hyper+F7: spelling suggestions for a copied word, using British English.
+hl.bind("CTRL + SHIFT + ALT + SUPER + F7", hl.dsp.exec_cmd("spelling-suggestions"))
 
 hl.env("XCURSOR_THEME", "Adwaita")
 hl.env("XCURSOR_SIZE", "24")
