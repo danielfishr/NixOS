@@ -173,7 +173,7 @@ sudo NIXOS_LABEL=utm-sharing nixos-rebuild switch --flake .#utm-on-mac14 --impur
 `Super` means the Windows key. `Hyper` means holding `Ctrl+Shift+Alt+Super`
 together; no dedicated Hyper key is configured. Letter keys below do not need
 Shift unless it is explicitly listed. Hyprland shortcuts apply to both hosts;
-Spelling suggestions and the keyd mappings apply only to the G14.
+Spelling suggestions, HyprEmoji and the keyd mappings apply only to the G14.
 
 ### Applications and session
 
@@ -184,9 +184,14 @@ Spelling suggestions and the keyd mappings apply only to the G14.
 | `Super+S` | Fuzzy switch to an open app/window |
 | `Super+E` | Open Files |
 | `Super+Shift+E` | Exit Hyprland |
+| `Hyper+.` | Open HyprEmoji (G14 only) |
 
 Jellyfin Desktop is installed on the G14 and can be launched through Fuzzel
 with `Super+D`. No dedicated Jellyfin shortcut is configured.
+
+iwmenu is installed on the G14 as **Wi-Fi Networks** in Fuzzel (`Super+D`).
+No dedicated Wi-Fi shortcut is configured, so the available shortcuts below
+are unchanged.
 
 ### Windows and layout
 
@@ -280,7 +285,8 @@ and `Super+Shift+J` (toggle split direction) are assigned; the other letters
 are unassigned.
 
 Hyper (`Ctrl+Shift+Alt+Super`) is a different modifier combination. Hyprland
-has no registered A-Z Hyper bindings, but keyd's `Ctrl+M` to Return mapping
+uses `Hyper+.` for HyprEmoji on the G14 and has no configured A-Z Hyper
+bindings. However, keyd's `Ctrl+M` to Return mapping
 means `Hyper+M` should not be treated as an available literal M chord.
 The availability table above is specifically for Super (the Windows key).
 Individual applications can define additional keys; this audit covers
@@ -322,6 +328,49 @@ git add -A -- modules config packages hosts/g14 README.md
 
 Log out and back in after applying to load the new binding and drop the old
 `input` group membership. User-local HyprCorrect preferences are not deleted.
+
+### Wi-Fi menu (iwmenu)
+
+The G14 includes [iwmenu](https://github.com/e-tho/iwmenu), using the existing
+Fuzzel launcher. NetworkManager uses iwd for Wi-Fi; NetworkManager continues
+to manage IP addresses, DNS and wired connections. The Mac VM retains its
+existing networking backend.
+
+Build and apply the configuration from this repository:
+
+```sh
+./build-g14.sh
+./apply-g14.sh iwmenu
+```
+
+Applying changes the Wi-Fi backend and may temporarily disconnect Wi-Fi.
+Existing networks may ask for their password again. Apply locally on the G14.
+
+Open **Wi-Fi Networks** from Fuzzel with `Super+D`, or run:
+
+```sh
+iwmenu --launcher fuzzel
+```
+
+Type to filter the menu, use the arrow keys to select an entry and press Enter.
+Select the wireless adapter if prompted, then select a network and follow the
+connection/password prompts. Escape closes the current menu. For menus that
+remain open after actions and go back on Escape, use:
+
+```sh
+iwmenu --launcher fuzzel --interactive
+```
+
+The menus also expose available device and saved-network actions. Run iwmenu
+as your normal user, not with sudo; `dan` already belongs to `wheel`, which the
+NixOS iwd package permits to access its D-Bus interface.
+
+If no adapter appears, check the service and wireless block state:
+
+```sh
+systemctl status iwd NetworkManager
+rfkill list
+```
 
 ### Hardware
 

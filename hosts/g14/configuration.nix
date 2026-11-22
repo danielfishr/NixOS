@@ -10,6 +10,12 @@
 
   networking.hostName = "g14";
 
+  # iwmenu talks to iwd; NetworkManager still manages IP addresses and DNS.
+  networking.networkmanager = {
+    wifi.backend = "iwd";
+    settings.device."wifi.iwd.autoconnect" = true;
+  };
+
   programs = {
     steam = {
       # Install Steam and its NixOS integration only on the gaming laptop.
@@ -36,12 +42,25 @@
     bluetooth.powerOnBoot = true;
   };
 
+  fonts.packages = [ pkgs.noto-fonts-color-emoji ];
+
   # Provide a graphical Bluetooth pairing tool for controllers.
   services.blueman.enable = true;
 
   environment.systemPackages = with pkgs; [
     adwaita-icon-theme
+    iwmenu
+    (callPackage ../../packages/hypremoji.nix { })
     jellyfin-desktop
+    (makeDesktopItem {
+      name = "iwmenu";
+      desktopName = "Wi-Fi Networks";
+      comment = "Manage Wi-Fi networks with iwmenu and Fuzzel";
+      exec = "${iwmenu}/bin/iwmenu --launcher fuzzel";
+      icon = "network-wireless";
+      terminal = false;
+      categories = [ "Network" "Settings" ];
+    })
   ];
 
   # Caps Lock is Escape when tapped and Control when used with another key.
