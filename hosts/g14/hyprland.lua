@@ -3,8 +3,8 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl setcursor Adwaita 24")
 end)
 
--- Super+C (correct): spelling suggestions for a copied word, using British English.
-hl.bind("SUPER + C", hl.dsp.exec_cmd("spelling-suggestions"))
+-- Super+C (correct): copy the selected word and offer British English suggestions.
+hl.bind("SUPER + C", hl.dsp.exec_cmd("spelling-suggestions"), { release = true })
 
 hl.env("XCURSOR_THEME", "Adwaita")
 hl.env("XCURSOR_SIZE", "24")

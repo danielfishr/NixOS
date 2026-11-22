@@ -251,29 +251,40 @@ These require no Super modifier and also work while the session is locked.
 
 | Shortcut | Action |
 | --- | --- |
-| `Super+C` (correct) | Show Aspell `en_GB` spelling suggestions in Rofi for the copied word |
+| `Super+C` (correct) | Copy the selected word and show Aspell `en_GB` spelling suggestions in Rofi |
 
-Copy a single word, press `Super+C`, choose a suggestion, then paste it over
-the selected word. Escape cancels without changing the clipboard. No automatic
-typing or background keyboard monitoring is used. Apply the configuration and
-start a new Hyprland session to activate the binding.
+Select a single word, press and release `Super+C`, choose a suggestion, then
+paste it over the selected word. The command sends `Ctrl+C` to the focused app
+(`Ctrl+Shift+C` in supported terminals, including Kitty) and waits for a fresh
+clipboard update before opening Rofi. Apps with custom copy shortcuts may not
+work. Escape leaves the copied selection on the clipboard without applying a
+suggestion. No automatic pasting or background keyboard monitoring is used.
+After applying the configuration, run `hyprctl reload` or start a new Hyprland
+session to activate the binding.
 
-### Available Hyper shortcuts
+### Available Super shortcuts
 
-All A-Z Hyper letter combinations are unassigned by this repository and
-available for new bindings. Spelling suggestions use `Super+C`; `Hyper+S`
-and `Hyper+F7` are unassigned.
+These Windows-key combinations were checked against the repository and all
+56 bindings in the running G14 Hyprland session on 2026-11-22:
 
-| Shortcut | Status |
+| Shortcuts | Status |
 | --- | --- |
-| `Hyper+A`, `Hyper+B`, `Hyper+C`, `Hyper+D`, `Hyper+E` | Unassigned |
-| `Hyper+F`, `Hyper+G`, `Hyper+H`, `Hyper+I`, `Hyper+J`, `Hyper+K` | Unassigned |
-| `Hyper+L`, `Hyper+M`, `Hyper+N`, `Hyper+O`, `Hyper+P`, `Hyper+Q` | Unassigned |
-| `Hyper+R`, `Hyper+S`, `Hyper+T`, `Hyper+U`, `Hyper+V`, `Hyper+W`, `Hyper+X`, `Hyper+Y`, `Hyper+Z` | Unassigned |
+| `Super+A`, `Super+G`, `Super+I`, `Super+M` | Unassigned |
+| `Super+N`, `Super+R`, `Super+T`, `Super+U` | Unassigned |
+| `Super+W`, `Super+Y`, `Super+Z` | Unassigned |
 
-This availability list covers the
-checked-in configuration; individual applications can define their own keys.
-Hyper already includes Shift, so `Hyper+Shift+F` is the same chord as `Hyper+F`.
+The other Super+A-Z combinations are assigned. In particular, `Super+C` runs
+spelling suggestions, `Super+S` switches windows and `Super+X` dismisses the
+latest notification. For Super+Shift+A-Z, only `Super+Shift+E` (exit Hyprland)
+and `Super+Shift+J` (toggle split direction) are assigned; the other letters
+are unassigned.
+
+Hyper (`Ctrl+Shift+Alt+Super`) is a different modifier combination. Hyprland
+has no registered A-Z Hyper bindings, but keyd's `Ctrl+M` to Return mapping
+means `Hyper+M` should not be treated as an available literal M chord.
+The availability table above is specifically for Super (the Windows key).
+Individual applications can define additional keys; this audit covers
+compositor bindings and the checked-in keyd mappings.
 
 ### Caps Lock and Control (G14)
 
@@ -295,9 +306,10 @@ The dictionary is British English (`en_GB`), set in `/etc/aspell.conf` and
 explicitly selected by `config/spelling/suggestions.py`.
 
 See [Spelling suggestions](#spelling-suggestions-g14) for the `Super+C` workflow.
-Suggestions are generated locally and the chosen replacement is copied to the
-clipboard for pasting. Cancelling or finding no suggestions preserves the
-clipboard. HyprCorrect's daemon, package, configuration and `input` group
+The selected word is copied automatically; suggestions are generated locally
+and the chosen replacement is copied to the clipboard for pasting. Cancelling
+or finding no suggestions leaves the copied word on the clipboard.
+HyprCorrect's daemon, package, configuration and `input` group
 requirement have been removed from the system configuration.
 
 Stage the new files before building with the Git flake:
