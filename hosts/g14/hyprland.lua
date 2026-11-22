@@ -1,6 +1,7 @@
 -- Use each connected display's preferred mode with native 1x scaling.
 hl.on("hyprland.start", function()
   hl.exec_cmd("hyprctl setcursor Adwaita 24")
+  hl.exec_cmd("hyprcorrect-session")
 end)
 
 hl.env("XCURSOR_THEME", "Adwaita")

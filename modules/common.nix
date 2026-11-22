@@ -273,7 +273,7 @@ in
     grim
     filesApp
     hyprWindowSwitcher
-    jetbrains.rider
+    (pkgs.callPackage ../packages/rider.nix { })
     kdePackages.filelight
     kitty
     libreoffice-qt

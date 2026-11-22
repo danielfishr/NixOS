@@ -91,6 +91,25 @@ The existing `update-lock-*.sh` scripts update all inputs and apply the system,
 so use the targeted commands above for browser-only updates. Nix documents
 [selective input updates](https://nix.dev/manual/nix/latest/command-ref/new-cli/nix3-flake-update).
 
+## Rider
+
+Both hosts install Rider 2026.3.0.1 using `packages/rider.nix`. This pins the
+official JetBrains Linux downloads and checksums independently of the system
+Nixpkgs revision while retaining Nixpkgs' Rider packaging and runtime setup.
+The optional native Microsoft authentication broker is unavailable: it requires
+WebKitGTK 4.0, which this Nixpkgs pin no longer provides. Authentication flows
+that require that broker are not supported by this package.
+To update Rider, change its version, build number and both architecture hashes
+in that file using the
+[JetBrains release API](https://data.services.jetbrains.com/products/releases?code=RD&latest=true&type=release).
+Add the package file to Git before rebuilding the flake:
+
+```sh
+git add packages/rider.nix modules/common.nix README.md
+./build-g14.sh
+./apply-g14.sh rider-update
+```
+
 ## Video player and file manager
 
 Both hosts include mpv for video playback and Nautilus (Files) as the graphical
@@ -114,23 +133,9 @@ settings specific to this virtual machine live in
 `~/.config/hypr/hyprland.lua`. After applying the system configuration, log out
 and select **Hyprland** from GDM's session menu.
 
-Important defaults:
-
-- `Super+Return`: open Kitty
-- `Super+D`: open the application launcher
-- `Super+E`: open Files
-- `Super+B`: show/hide Waybar
-- `Super+O`: focus the previously selected window
-- `Super+Q`: close the active window
-- `Super+X`: dismiss the latest Mako notification
-- `Super+Shift+E`: exit Hyprland
-- `Super+1` through `Super+9`: switch to workspaces 1–9
-- `Super+0`: switch to workspace 10
-
-The complete shortcut reference is in the comments above the bindings in
-`config/hypr/hyprland.lua`, including window layout controls, directional focus,
-workspace moves, mouse actions, screenshots, media keys and the G14 Caps Lock
-mapping. Super means the Windows key.
+See [Shortcuts](#shortcuts) for all configured bindings. Their source is
+`config/hypr/hyprland.lua`; HyprCorrect bindings are managed in
+`config/hyprcorrect/config.toml`.
 
 Both G14 and UTM-on-Mac14 use Apple-style natural scrolling for mouse wheels
 and touchpads.
@@ -160,7 +165,149 @@ with `NIXOS_LABEL` set in the root environment, for example:
 sudo NIXOS_LABEL=utm-sharing nixos-rebuild switch --flake .#utm-on-mac14 --impure
 ```
 
+## Shortcuts
+
+`Super` means the Windows key. `Hyper` means holding `Ctrl+Shift+Alt+Super`
+together; no dedicated Hyper key is configured. Letter keys below do not need
+Shift unless it is explicitly listed. Hyprland shortcuts apply to both hosts;
+HyprCorrect and the keyd mappings apply only to the G14.
+
+### Applications and session
+
+| Shortcut | Action |
+| --- | --- |
+| `Super+Return` | Open Kitty |
+| `Super+D` | Open Fuzzel, the application launcher |
+| `Super+S` | Fuzzy switch to an open app/window |
+| `Super+E` | Open Files |
+| `Super+Shift+E` | Exit Hyprland |
+
+### Windows and layout
+
+| Shortcut | Action |
+| --- | --- |
+| `Super+Q` | Close the active window |
+| `Super+O` | Focus the previously selected window |
+| `Super+F` | Toggle fullscreen |
+| `Super+V` | Toggle floating mode |
+| `Super+P` | Toggle pseudotiling |
+| `Super+Shift+J` | Toggle the active dwindle split direction |
+| `Super` + left-button drag | Move a window |
+| `Super` + right-button drag | Resize a window |
+
+### Focus and workspaces
+
+| Shortcut | Action |
+| --- | --- |
+| `Super+Left` or `Super+H` | Focus the window to the left |
+| `Super+Down` or `Super+J` | Focus the window below |
+| `Super+Up` or `Super+K` | Focus the window above |
+| `Super+Right` or `Super+L` | Focus the window to the right |
+| `Super+1` through `Super+9` | Switch to workspace 1 through 9 |
+| `Super+0` | Switch to workspace 10 |
+| `Super+F1` through `Super+F9` | Move the active window to workspace 1 through 9 |
+| `Super+F10` | Move the active window to workspace 10 |
+| `Super+Tab` | Next existing workspace |
+| `Super+Shift+Tab` | Previous existing workspace |
+
+### Bar and notifications
+
+| Shortcut | Action |
+| --- | --- |
+| `Super+B` | Show/hide Waybar; it starts hidden and reserves no space |
+| `Super+X` | Dismiss the latest Mako notification |
+
+### Screenshots
+
+| Shortcut | Action |
+| --- | --- |
+| `Print` | Select an area and copy its screenshot to the clipboard |
+| `Super+Print` | Copy all outputs as one screenshot to the clipboard |
+
+Screenshots are not saved to files.
+
+### Hardware keys
+
+These require no Super modifier and also work while the session is locked.
+
+| Shortcut | Action |
+| --- | --- |
+| `XF86AudioRaiseVolume` | Raise volume by 5%, capped at 100%; repeats on hold |
+| `XF86AudioLowerVolume` | Lower volume by 5%; repeats on hold |
+| `XF86AudioMute` | Toggle output mute |
+| `XF86AudioPlay` | Toggle media play/pause |
+| `XF86AudioNext` | Next media track |
+| `XF86AudioPrev` | Previous media track |
+| `XF86MonBrightnessUp` | Raise display brightness by 5%; repeats on hold |
+| `XF86MonBrightnessDown` | Lower display brightness by 5%; repeats on hold |
+
+### HyprCorrect (G14)
+
+| Shortcut | Action |
+| --- | --- |
+| `Hyper+F` (`Ctrl+Shift+Alt+Super+F`) | Correct the last word |
+| `Hyper+S` (`Ctrl+Shift+Alt+Super+S`) | Correct the last sentence |
+| `Hyper+R` (`Ctrl+Shift+Alt+Super+R`) | Review a correction before applying |
+
+These become active after applying the G14 configuration and starting a new
+login session, so the `input` group membership takes effect.
+
+### Available Hyper shortcuts
+
+Among the A-Z letter keys, only `Hyper+F`, `Hyper+R` and `Hyper+S` are assigned
+by this repository. These combinations are available for new bindings:
+
+| Shortcut | Status |
+| --- | --- |
+| `Hyper+A`, `Hyper+B`, `Hyper+C`, `Hyper+D`, `Hyper+E` | Unassigned |
+| `Hyper+G`, `Hyper+H`, `Hyper+I`, `Hyper+J`, `Hyper+K` | Unassigned |
+| `Hyper+L`, `Hyper+M`, `Hyper+N`, `Hyper+O`, `Hyper+P`, `Hyper+Q` | Unassigned |
+| `Hyper+T`, `Hyper+U`, `Hyper+V`, `Hyper+W`, `Hyper+X`, `Hyper+Y`, `Hyper+Z` | Unassigned |
+
+`Hyper+L`, HyprCorrect's upstream LLM-review default, is explicitly disabled
+here because no LLM provider is configured. This availability list covers the
+checked-in configuration; individual applications can define their own keys.
+Hyper already includes Shift, so `Hyper+Shift+F` is the same chord as `Hyper+F`.
+
+### Caps Lock and Control (G14)
+
+These system-wide keyd mappings also work outside Hyprland.
+
+| Shortcut | Action |
+| --- | --- |
+| Tap Caps Lock alone | Escape |
+| Hold Caps Lock with another key | Control + that key |
+| `Ctrl+M` or `Caps Lock+M` | Return; overrides Control+M |
+
 ## G14
+
+### HyprCorrect
+
+The G14 installs HyprCorrect 0.6.0 from a checksum-pinned upstream Linux release
+using `packages/hyprcorrect.nix` and `modules/hyprcorrect.nix`. It starts with
+Hyprland and uses offline Spellbook correction for both words and sentences.
+
+See [HyprCorrect shortcuts](#hyprcorrect-g14) for the configured correction keys.
+
+Edit `config/hyprcorrect/config.toml` for persistent settings. The startup
+command copies this managed configuration to a private, user-owned regular file
+at `~/.config/hyprcorrect/config.toml`, because HyprCorrect refuses symlinks.
+Changes saved through `hyprcorrect prefs` last until the next Hyprland session.
+The bundled spelling dictionary is American English.
+
+Stage the new files before building with the Git flake:
+
+```sh
+git add packages/hyprcorrect.nix modules/hyprcorrect.nix config/hyprcorrect/config.toml hosts/g14/configuration.nix hosts/g14/hyprland.lua README.md
+./build-g14.sh
+./apply-g14.sh hyprcorrect
+```
+
+Log out and back in after applying so the new `input` group membership takes
+effect. HyprCorrect needs this group to read keyboard events. The daemon
+registers its correction shortcuts with Hyprland automatically.
+
+### Hardware
 
 The checked-in hardware configuration contains this GA401QM laptop's generated
 filesystem UUIDs and boot modules. Model-specific settings in

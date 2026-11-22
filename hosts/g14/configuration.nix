@@ -3,6 +3,7 @@
 {
   imports = [
     ../../modules/common.nix
+    ../../modules/hyprcorrect.nix
     ./hardware-configuration.nix
     ./laptop.nix
   ];
