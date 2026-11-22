@@ -251,24 +251,25 @@ These require no Super modifier and also work while the session is locked.
 
 | Shortcut | Action |
 | --- | --- |
-| `Hyper+F7` (`Ctrl+Shift+Alt+Super+F7`) | Show Aspell `en_GB` spelling suggestions in Rofi for the copied word |
+| `Hyper+S` (`Ctrl+Shift+Alt+Super+S`) | Show Aspell `en_GB` spelling suggestions in Rofi for the copied word |
 
-Copy a single word, press `Hyper+F7`, choose a suggestion, then paste it over
+Copy a single word, press `Hyper+S`, choose a suggestion, then paste it over
 the selected word. Escape cancels without changing the clipboard. No automatic
 typing or background keyboard monitoring is used. Apply the configuration and
 start a new Hyprland session to activate the binding.
 
 ### Available Hyper shortcuts
 
-All A-Z Hyper letter combinations are unassigned by this repository and are
-available for new bindings. `Hyper+F7` is assigned to spelling suggestions.
+All A-Z Hyper letter combinations except `Hyper+S` are unassigned by this
+repository and available for new bindings. `Hyper+S` is assigned to spelling
+suggestions; `Hyper+F7` is unassigned.
 
 | Shortcut | Status |
 | --- | --- |
 | `Hyper+A`, `Hyper+B`, `Hyper+C`, `Hyper+D`, `Hyper+E` | Unassigned |
 | `Hyper+F`, `Hyper+G`, `Hyper+H`, `Hyper+I`, `Hyper+J`, `Hyper+K` | Unassigned |
 | `Hyper+L`, `Hyper+M`, `Hyper+N`, `Hyper+O`, `Hyper+P`, `Hyper+Q` | Unassigned |
-| `Hyper+R`, `Hyper+S`, `Hyper+T`, `Hyper+U`, `Hyper+V`, `Hyper+W`, `Hyper+X`, `Hyper+Y`, `Hyper+Z` | Unassigned |
+| `Hyper+R`, `Hyper+T`, `Hyper+U`, `Hyper+V`, `Hyper+W`, `Hyper+X`, `Hyper+Y`, `Hyper+Z` | Unassigned |
 
 This availability list covers the
 checked-in configuration; individual applications can define their own keys.
@@ -293,7 +294,7 @@ and the `spelling-suggestions` command using `modules/spelling.nix`.
 The dictionary is British English (`en_GB`), set in `/etc/aspell.conf` and
 explicitly selected by `config/spelling/suggestions.py`.
 
-See [Spelling suggestions](#spelling-suggestions-g14) for the `Hyper+F7` workflow.
+See [Spelling suggestions](#spelling-suggestions-g14) for the `Hyper+S` workflow.
 Suggestions are generated locally and the chosen replacement is copied to the
 clipboard for pasting. Cancelling or finding no suggestions preserves the
 clipboard. HyprCorrect's daemon, package, configuration and `input` group

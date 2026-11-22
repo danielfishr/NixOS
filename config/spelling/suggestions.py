@@ -14,7 +14,7 @@ def main():
         capture_output=True, text=True, check=False,
     )
     if clipboard.returncode:
-        notify("Copy a word first, then press Hyper+F7.")
+        notify("Copy a word first, then press Hyper+S.")
         return
     word = clipboard.stdout.strip()
     if len(word) > 128 or not re.fullmatch(r"[^\W\d_]+(?:['-][^\W\d_]+)*", word):
